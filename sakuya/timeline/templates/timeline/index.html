@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block header-menu %}
+<ul class="nav navbar-nav">
+	<li><a href="/timeline/">ダッシュボード</a></li>
+	<li><a class="active-menu" href="/timeline/">タイムライン</a></li>
+</ul>
+{% endblock header-menu %}
+
+{% block load-libs-head %}
+<link rel="stylesheet" href="{% static 'timeline/css/timeline.css' %}">
+{% endblock load-libs-head %}
+
+{% block body-start %}
+<body ng-app="TimelineApp" ng-controller="TimelineController">
+{% endblock body-start %}
+
+{% block content %}
+<div id="login-container">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-1">
+			</div>
+			<div class="col-xs-8">
+        <div class="timeline-plate">
+					<div class="timeline-menu">
+						<ul class="menu-list">
+							<li class="menu-item">
+								<div class="menu-icon" ng-click="showPhotoEditor()" style="background-image: url({% static 'icons/plus.svg' %}"></div>
+							</li>
+						</ul>
+					</div>
+          <ol class="timeline-item-list">
+						<li id="timeline-photo-editor">
+							{% verbatim %}
+							<div class="timeline-frame edit-frame">
+								<div class="timeline-header">
+									<input class="photo-title-input" type="text" placeholder="フォトのタイトル" ng-model="photo.title"></input>
+								</div>
+								<div class="photo-container">
+									<div id="user-drop-image" class="timeline-photo-image"
+				            ng-class="{'image-drop-area': photo.imageFile==null}"
+				            style="background-image: url({{ photo.url }});">
+				            <div class="image-placeholder" ng-show="photo.imageFile==null">
+				              <span>画像ファイルをここにドロップしてください</span>
+				            </div>
+				          </div>
+								</div>
+								<div class="photo-comment">
+									<div id="photo-comment-input"　contenteditable="true">
+				            <input class="photo-comment-placeholder" type="text" placeholder="コメント"></input>
+				          </div>
+								</div>
+								<div class="photo-submit-button-container">
+									<button class="btn btn-warning" ng-click="hidePhotoEditor()">キャンセル</button>
+									<button class="btn btn-warning" ng-click="save()">保存</button>
+								</div>
+							</div>
+							{% endverbatim %}
+						</li>
+          {% for photo in active_child.photo_set.all %}
+            <li>
+              <div class="timeline-frame">
+                <div class="timeline-header">
+                  <div class="timeline-photo-title" ng-click="delete({{photo.id}})">
+                    <h2>{{ photo.title }}</h2>
+                    <span>{{ photo.date }}</span>
+                    <span> - </span>
+                    <span>{{ photo.age }}</span>
+                  </div>
+                  {% if photo.stamp.image %}
+                  <div class="timeline-stamp-image" style="background-image: url(media/{{ photo.stamp.image }})">
+                  </div>
+                  {% endif %}
+                </div>
+								{% if photo.image %}
+                <div class="photo-container">
+                  <div class="timeline-photo-image" style="background-image: url(media/{{ photo.image }})">
+                  </div>
+                </div>
+								{% endif %}
+
+								{% if photo.audio %}
+								<div class="photo-container">
+									<audio class="timeline-photo-audio" src="media/{{ photo.audio }}" controls>
+									</audio>
+								</div>
+								{% endif %}
+								<div class="photo-comment">
+									<p>{{ photo.comment }}</p>
+								</div>
+								<div class="photo-footer">
+									<p>{{ photo.footer }}</p>
+								</div>
+              </div>
+            </li>
+          {% endfor %}
+          </ol>
+        </div>
+			</div>
+			<div class="col-xs-3">
+				{% if active_child %}
+				<div class="child-profile-plate">
+          <div class="profile-header">
+            <h3>{{ active_child.name }}</h3>
+            <p class="profile-age">{{ active_child.detail_age }}</p>
+          </div>
+          <div>
+    				<div class="profile-image" style="background-image: url('media/{{ active_child.image }}')" ></div>
+    			</div>
+          <p class="profile-comment">{{ active_child.comment}}</p>
+        </div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block load-libs-foot %}
+<script src="{% static 'timeline/js/app.js' %}"></script>
+<script src="{% static 'timeline/js/services.js' %}"></script>
+<script src="{% static 'timeline/js/utils.js' %}"></script>
+<script src="{% static 'timeline/js/models/photo.js' %}"></script>
+<script src="{% static 'timeline/js/controllers/timeline-controller.js' %}"></script>
+{% endblock load-libs-foot %}

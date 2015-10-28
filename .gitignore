@@ -1,0 +1,7 @@
+db.sqlite3
+manage.py
+libs/
+media/
+images/
+icons/
+__pycache__/

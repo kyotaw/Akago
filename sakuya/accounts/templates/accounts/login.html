@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block header-menu %}
+{% endblock header-menu %}
+
+{% block header-left %}
+<li><a href="/login/">新規アカウント</a></li>
+{% endblock header-left%}
+
+{% block load-libs-head %}
+<link rel="stylesheet" href="{% static 'accounts/css/accounts.css' %}">
+{% endblock load-libs-head %}
+
+{% block content %}
+<div id="login-container">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1">
+			</div>
+			<div class="col-md-8">
+				<h1 class="phrase">成長の記録。</h1>
+				<div class="home-baby" style="background-image: url({% static 'images/homebaby.svg' %});">
+
+				</div>
+			</div>
+			<div class="col-md-3">
+				{% if form.errors %}
+				<p>ユーザー名またはパスワードが間違っています</p>
+				{% endif %}
+
+				<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+				  {% csrf_token %}
+					<div class="form-group">
+						<input name="username" type="text" class="form-control" placeholder="ユーザー名">
+					</div>
+					<div class="form-group">
+						<input name="password" type="password" class="form-control" placeholder="パスワード">
+					</div>
+					<button type="submit" class="btn btn-warning form-control">ログイン</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
