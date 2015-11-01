@@ -5,3 +5,4 @@ media/
 images/
 icons/
 __pycache__/
+.DS_Store

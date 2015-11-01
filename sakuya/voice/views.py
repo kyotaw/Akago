@@ -48,6 +48,7 @@ def record(request):
                 vocab_word = Word.objects.create(
                     lemma=word.lemma,
                     pron=word.pron,
+                    base=word.base,
                     pos1=pos1, pos2=pos2, pos3=pos3,
                     conj_type=word.conj_type,
                     conj_form=word.conj_form,

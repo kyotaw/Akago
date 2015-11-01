@@ -22,7 +22,9 @@ urlpatterns = [
     url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'accounts/login.html'}),
     url(r'^timeline/', include('sakuya.timeline.urls', namespace='timeline')),
+    url(r'^dashboard/', include('sakuya.dashboard.urls', namespace='dashboard')),
     url(r'^photos/', include('sakuya.photos.urls', namespace='photos')),
     url(r'^strength/', include('sakuya.strength.urls', namespace='strength')),
     url(r'^voice/', include('sakuya.voice.urls', namespace='voice')),
+    url(r'^vocaburary/', include('sakuya.vocaburary.urls', namespace='vocaburary')),
 ]
