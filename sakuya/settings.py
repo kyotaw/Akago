@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'sakuya.strength',
     'sakuya.voice',
     'sakuya.dashboard',
-    'sakuya.vocaburary'
+    'sakuya.vocaburary',
+    'sakuya.motions'
 )
 
 MIDDLEWARE_CLASSES = (

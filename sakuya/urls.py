@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^strength/', include('sakuya.strength.urls', namespace='strength')),
     url(r'^voice/', include('sakuya.voice.urls', namespace='voice')),
     url(r'^vocaburary/', include('sakuya.vocaburary.urls', namespace='vocaburary')),
+    url(r'^motions/', include('sakuya.motions.urls', namespace='motions')),
 ]

@@ -9,6 +9,7 @@ from django.http.response import JsonResponse
 from nlang.processor.tokenizer import Tokenizer
 from nlang.corpus.chasen.chasen_type import ChasenInvertTable
 
+from sakuya.accounts.models import Child
 from sakuya.photos.models import Photo, Stamp
 from sakuya.voice.models import Word
 from sakuya.utils import get_active_user, get_owner_child
@@ -62,6 +63,22 @@ def record(request):
             if new_vocab:
                 comment += 'NEW!'
             comment += '　'
+
+            try:
+                all_child = Child.objects.get(id=4)
+                all_child.word_set.get(lemma=vocab_word.lemma, tag=vocab_word.tag)
+            except:
+                all_child.word_set.create(
+                    lemma=vocab_word.lemma,
+                    pron=vocab_word.pron,
+                    base=vocab_word.base,
+                    pos1=vocab_word.pos1,
+                    pos2=vocab_word.pos2,
+                    pos3=vocab_word.pos3,
+                    conj_type=vocab_word.conj_type,
+                    conj_form=vocab_word.conj_form,
+                    tag=vocab_word.tag,
+                    date=now())
 
 
     speech_file = request.FILES['speech_file']

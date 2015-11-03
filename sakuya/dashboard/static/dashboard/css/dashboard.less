@@ -9,10 +9,6 @@ ol.dashboard-item-list {
   padding: 0;
 }
 
-p.narrow {
-  margin-bottom: 2px;
-}
-
 .plate-style {
 	background-color: white;
 	border: 1px solid #dcdcdc;
@@ -98,6 +94,7 @@ p.narrow {
 
 .key-value {
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .profile-key {
@@ -124,6 +121,10 @@ p.narrow {
   .image-style;
   width: 100%;
   height: 100%;
+}
+
+.no-image {
+  margin-top: 30px;
 }
 
 .dashboard-motion-frame {
@@ -161,28 +162,45 @@ p.narrow {
 
 .dashboard-lang-frame {
   margin: 15px 30px 0;
-  height: 320px;
-}
-
-.dashboard-pos-list {
-  width: 20%;
-  display: inline-block;
+  height: 330px;
 }
 
 .pos-key {
-  width: 35%;
+  width: 25%;
+  display: inline-block;
+  text-align: left;
+}
+
+.separator {
+  width: 5%;
   display: inline-block;
   text-align: left;
 }
 
 .pos-value {
-  width: 65%;
+  width: 70%;
+  margin: 0;
+  padding-left: 10px;
   display: inline-block;
   text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.pos-mean {
+  padding-left: 5px;
+  display: inline-block;
+  text-align: left;
+  display: none;
+}
+
+.dashboard-pos-list {
+  width: 25%;
+  display: inline-block;
 }
 
 .dashboard-lang-chart {
-  width: 80%;
+  width: 75%;
   display: inline-block;
   float: right;
   text-align: left;
@@ -194,8 +212,38 @@ p.show-all {
   margin-top: 20px;
 }
 
-p.additional {
+p.show-mean {
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 20px;
+}
+
+div.additional {
   display: none;
+}
+
+div.narrow {
+  margin-bottom: 2px;
+}
+
+.backward-arrow {
+  display: inline-block;
+  text-align: left;
+  .image-style;
+  width: 20px;
+  height: 20px;
+  float: left;
+  cursor: pointer;
+}
+
+.forward-arrow {
+  display: inline-block;
+  text-align: left;
+  .image-style;
+  width: 20px;
+  height: 20px;
+  float: right;
+  cursor: pointer;
 }
 
 #google-timeline-chart {

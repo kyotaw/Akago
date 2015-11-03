@@ -1,18 +1,29 @@
 app = angular.module('DashboardApp');
 
 
-app.controller('DashboardController', ['$scope', '$timeout', 'Child', function($scope, $timeout, Child) {
+app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal', function($scope, $timeout, Child, $uibModal) {
 	$scope.motionChart = null;
 	$scope.langChart = null;
+
+	$scope.langChartStep = 5;
+	$scope.currentLangRange = [0, 15];
+	$scope.currentLangPosList = 
+		{
+			'n': '名詞',
+			'v': '動詞',
+			'adj': '形容詞',
+			'adv': '副詞',
+			'im': '感動詞'
+		}				
 
 	$scope.showAll = function() {
 		$('p.show-all').hide();
 		$('#google-line-chart').height('340px');
-		$('.dashboard-lang-frame').height('400px');
-		$('p.required').addClass('narrow');
-		$('p.additional').show();
+		$('.dashboard-lang-frame').height('420px');
+		$('div.required').addClass('narrow');
+		$('div.additional').show();
 		$scope.langChart.clearChart();
-		$scope.drawLangChart(
+		$scope.currentLangPosList = 
 			{
 				'n': '名詞',
 				'v': '動詞',
@@ -26,24 +37,62 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', function($
 				't': '連体詞',
 				'unk': '未知語'
 			}				
-		);
+		$scope.drawLangChart(self.currentLangPosList);
+	}
+
+	$scope.showMean = function() {
+		$('.pos-mean').show();
+		$('.show-mean').hide();
+	}
+
+	$scope.openWordListModal = function(pos) {
+		var child = new Child($('#dashboard-internal-token').text());
+		child.words(null, [pos], function(data){
+			$uibModal.open({
+				templateUrl: 'word-list-modal.html',
+				controller: 'WordModalController',
+				resolve: {
+					Pos: function() { return $scope.currentLangPosList[pos]; },
+					Words: function() { return data[pos]['words']; }
+				}
+			});
+		});
+	}
+
+	$scope.forward = function() {
+		$scope.currentLangRange[0] += $scope.langChartStep;
+		$scope.currentLangRange[1] += $scope.langChartStep;
+		$scope.langChart.clearChart();
+		$scope.drawLangChart(self.currentLangPosList);
+	}
+
+	$scope.backward = function() {
+		var start = $scope.currentLangRange[0] - $scope.langChartStep;
+		if (start < 0) {
+			return;
+		}
+		$scope.currentLangRange[0] = start;
+		$scope.currentLangRange[1] -= $scope.langChartStep;
+		$scope.langChart.clearChart();
+		$scope.drawLangChart(self.currentLangPosList);
 	}
 
 	$scope.drawLangChart = function(pos_list) {
 		var dataTable = new google.visualization.DataTable();
-		dataTable.addColumn('number', '生後');
-		for (key in pos_list) {
-			dataTable.addColumn('number', pos_list[key]);
+		dataTable.addColumn('number', '生後(ヶ月)');
+		for (key in $scope.currentLangPosList) {
+			dataTable.addColumn('number', $scope.currentLangPosList[key]);
 		}
 		
 		var child = new Child($('#dashboard-internal-token').text());
-		child.words(function(data){
+		child.words($scope.currentLangRange, [], function(data){
 			var res_list = [];
-			for (key in pos_list) {
+			for (key in $scope.currentLangPosList) {
 				res_list.push(data[key]['monthly']);	
 			}
+		
 			rows = [];
-			for (var i = 0; i < 16; ++i) {
+			for (var i = $scope.currentLangRange[0]; i <= $scope.currentLangRange[1]; ++i) {
 				var row = [];
 				row.push(i);
 				for (var j = 0; j < res_list.length; ++j) {
@@ -63,7 +112,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', function($
 							}
 						},
 					}
-				}
+				},
 			}
 
 			$scope.langChart = new google.charts.Line(document.getElementById('google-line-chart'));
@@ -71,7 +120,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', function($
 		});	
 	}
 
-	function drawChart() {
+	$scope.drawMotionChart = function(motionList) {
 		var container = document.getElementById('google-timeline-chart');
 		var dataTable = new google.visualization.DataTable();
 		dataTable.addColumn({ type: 'string', id: 'dummy' });
@@ -88,79 +137,44 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', function($
 			['6', 'ひとり立ち', '10〜13ヶ月', 10000, 13000],
 			['7', '二足歩行', '12〜15ヶ月', 12000, 15000],
 		]);
-		var options = {
-			timeline: { showRowLabels: false },
-			backgroundColor: '#ffffff',
-			colors: [
-				'#d3d3d3',
-				'#d3d3d3',
-				'#d3d3d3',
-				'#00bfff',
-				'#d3d3d3',
-				'#d3d3d3',
-				'#d3d3d3',
-			]
-		}
-		$scope.motionChart = new google.visualization.Timeline(container);
-		$scope.motionChart.draw(dataTable, options);
+		
+		var child = new Child($('#dashboard-internal-token').text());
+		child.motions(motionList, function(data) {
+			var colors = [];
+			for (var i = 0; i < motionList.length; ++i) {
+				var motion = motionList[i]
+				if (data[motion] && data[motion]['count'] > 0) {
+					colors.push('#00bfff');
+				} else {
+					colors.push('#d3d3d3');
+				}
+			}
+			var options = {
+				timeline: { showRowLabels: false },
+				backgroundColor: '#ffffff',
+				colors: colors
+			}
+			$scope.motionChart = new google.visualization.Timeline(container);
+			$scope.motionChart.draw(dataTable, options);
+		});
+	}
 
-		$scope.drawLangChart(
-			{
-				'n': '名詞',
-				'v': '動詞',
-				'adj': '形容詞',
-				'adv': '副詞',
-				'im': '感動詞'
-			}				
-		);
+	function drawChart() {
+		$scope.drawMotionChart(['neck_fix', 'rolling_over', 'sit', 'crawl', 'pullup', 'standup', 'walk']);
+		$scope.drawLangChart(self.currentLangPosList);
 	}
 	google.load("visualization", "1", {packages: ["timeline", "line"], callback: drawChart});
 }]);
-/*
-		var dataTable = new google.visualization.DataTable();
-		dataTable.addColumn('number', '生後');
-		dataTable.addColumn('number', '名詞');
-		dataTable.addColumn('number', '動詞');
-		dataTable.addColumn('number', '形容詞');
-		dataTable.addColumn('number', '副詞');
-		dataTable.addColumn('number', '感動詞');
-		dataTable.addColumn('number', '助詞');
-		dataTable.addColumn('number', '接続詞');
-		dataTable.addColumn('number', '助動詞');
-		dataTable.addColumn('number', '接頭詞');
-		dataTable.addColumn('number', '連体詞');
-		dataTable.addColumn('number', '未知語');
-		
-		var child = new Child($('#dashboard-internal-token').text());
-		child.words(function(data){
-			n = data['n']['monthly'];
-			v = data['v']['monthly'];
-			adj = data['adj']['monthly'];
-			adv = data['adv']['monthly'];
-			im = data['im']['monthly'];
-		   	j = data['j']['monthly'];
-			conj = data['conj']['monthly'];
-			auv	= data['auv']['monthly'];
-		   	p = data['p']['monthly'];
-			t = data['t']['monthly'];
-			unk = data['unk']['monthly'];
 
-			rows = [];
-			for (var i = 0; i < 16; ++i) {
-					rows.push([
-						i, 
-						n[i]['count'],
-						v[i]['count'],
-						adj[i]['count'],
-						adv[i]['count'],
-						im[i]['count'],
-						j[i]['count'],
-						conj[i]['count'],
-						auv[i]['count'],
-						p[i]['count'],
-						t[i]['count'],
-						unk[i]['count']]);
-			}
-			dataTable.addRows(rows)
-			$scope.langChart = new google.charts.Line(document.getElementById('google-line-chart'))
-*/
+
+app.controller('WordModalController', ['$scope', '$uibModalInstance', 'Words', 'Pos', function($scope, $uibModalInstance, words, pos) {
+	$scope.words = words;
+	$scope.pos = pos;
+
+	$scope.closeModal = function() {
+			$uibModalInstance.close();
+	}
+}]);
+
+
+

@@ -9,7 +9,7 @@ class PhotoInline(admin.StackedInline):
 
 class PhotoAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['title', 'image', 'audio', 'movie', 'stamp', 'date', 'age', 'comment', 'footer', 'owner']})
+        (None, {'fields': ['title', 'image', 'audio', 'movie', 'stamp', 'date', 'age', 'comment', 'motion', 'footer', 'owner']})
     ]
     list_display = ('title', 'date',)
 

@@ -40,8 +40,12 @@
                   </div>
 									<div class="dashboard-image">
 										最近の写真
-                  	<div class="current-image" style="background-image: url(media/photos/baby2.jpg)">
+										{% if current_image %}
+                  	<div class="current-image" style="background-image: url(media/{{ current_image }})">
                   	</div>
+										{% else %}
+										<p class="no-image">まだ写真がありません</p>
+										{% endif %}
 									</div>
                 </div>
 								<div class="dashboard-footer">
@@ -55,13 +59,13 @@
 								</div>
 								<div class="dashboard-content">
                   <div class="dashboard-motion-list">
-                    <p class="key-value"><span class="motion-key">首すわり</span><span class="motion-value">：1ヶ月以内</span></p>
-										<p class="key-value"><span class="motion-key">寝返り</span><span class="motion-value">：1ヶ月以内</span></p>
-										<p class="key-value"><span class="motion-key">ひとりすわり</span><span class="motion-value">：2ヶ月以内</span></p>
-										<p class="key-value"><span class="motion-key">はいはい</span><span class="motion-value">：2015/5/2に達成</span></p>
-										<p class="key-value"><span class="motion-key">つかまり立ち</span><span class="motion-value">：3ヶ月以内</span></p>
-										<p class="key-value"><span class="motion-key">ひとり立ち</span><span class="motion-value">：5ヶ月以内</span></p>
-										<p class="key-value"><span class="motion-key">二足歩行</span><span class="motion-value">：6ヶ月以内</span></p>
+                    <div class="key-value"><span class="motion-key">首すわり</span><span class="motion-value">：{{ neck_fix }}</span></div>
+										<div class="key-value"><span class="motion-key">寝返り</span><span class="motion-value">：{{ rolling_over }}</span></div>
+										<div class="key-value"><span class="motion-key">ひとりすわり</span><span class="motion-value">：{{ sit }}</span></div>
+										<div class="key-value"><span class="motion-key">はいはい</span><span class="motion-value">：{{ crawl }}</span></div>
+										<div class="key-value"><span class="motion-key">つかまり立ち</span><span class="motion-value">：{{ pullup }}</span></div>
+										<div class="key-value"><span class="motion-key">ひとり立ち</span><span class="motion-value">：{{ standup }}</span></div>
+										<div class="key-value"><span class="motion-key">二足歩行</span><span class="motion-value">：{{ walk }}</span></div>
                   </div>
 									<div class="dashboard-motion-chart">
                   	<div class="chart-container">
@@ -81,29 +85,31 @@
 								</div>
 								<div class="dashboard-content">
                   <div class="dashboard-pos-list">
-										<p class="key-value required"><span class="pos-key">名詞</span><span class="pos-value">：{{ lang.n }}</span></p>
-										<p class="key-value required"><span class="pos-key">動詞</span><span class="pos-value">：{{ lang.v }}</span></p>
-										<p class="key-value required"><span class="pos-key">形容詞</span><span class="pos-value">：{{ lang.adj }}</span></p>
-										<p class="key-value required"><span class="pos-key">副詞</span><span class="pos-value">：{{ lang.adv }}</span></p>
-										<p class="key-value required"><span class="pos-key">感動詞</span><span class="pos-value">：{{ lang.im }}</span></p>
-										{% verbatim %}
+										<div class="key-value required"><span class="pos-key">名詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('n')">{{ lang.n }}</span><span class="pos-mean">({{ lang_mean.n }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('v')">{{ lang.v }}</span><span class="pos-mean">({{ lang_mean.v }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">形容詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adj')">{{ lang.adj }}</span><span class="pos-mean">({{ lang_mean.adj }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">副詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adv')">{{ lang.adv }}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">感動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('im')">{{ lang.im }}</span><span class="pos-mean">({{ lang_mean.im }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">助詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('j')">{{ lang.j }}</span><span class="pos-mean">({{ lang_mean.j }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">接続詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('conj')">{{ lang.conj }}</span><span class="pos-mean">({{ lang_mean.conj }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">助動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('auv')">{{ lang.auv }}</span><span class="pos-mean">({{ lang_mean.auv }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">接頭詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('p')">{{ lang.p }}</span><span class="pos-mean">({{ lang_mean.p }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">連体詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('t')">{{ lang.t }}</span><span class="pos-mean">({{ lang_mean.t }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">未知語</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('unk')">{{ lang.unk}}</span><span class="pos-mean">({{ lang_mean.unk }})</span></p></div>
 										<p class="show-all" ng-click="showAll()">全て表示</p>
-										{% endverbatim %}
-										<p class="key-value narrow additional"><span class="pos-key">助詞</span><span class="pos-value">：{{ lang.j }}</span></p>
-										<p class="key-value narrow additional"><span class="pos-key">接続詞</span><span class="pos-value">：{{ lang.conj }}</span></p>
-										<p class="key-value narrow additional"><span class="pos-key">助動詞</span><span class="pos-value">：{{ lang.auv }}</span></p>
-										<p class="key-value narrow additional"><span class="pos-key">接頭詞</span><span class="pos-value">：{{ lang.p }}</span></p>
-										<p class="key-value narrow additional"><span class="pos-key">連体詞</span><span class="pos-value">：{{ lang.t }}</span></p>
-										<p class="key-value narrow additional"><span class="pos-key">未知語</span><span class="pos-value">：{{ lang.unk}}</span></p>
+										<p class="show-mean" ng-click="showMean()">{{ all_child_number }}人の平均を表示</p>
 									</div>
 									<div class="dashboard-lang-chart">
                   	<div class="chart-container">
 											<div id="google-line-chart"></div>
+											<div>
+												<div class="backward-arrow" ng-click="backward()" style="background-image: url({% static 'icons/arrow004_r.jpg' %}"></div>
+												<div class="forward-arrow" ng-click="forward()" style="background-image: url({% static 'icons/arrow004.jpg' %}"></div>
+											</div>
                   	</div>
 									</div>
                 </div>
 								<div class="dashboard-footer">
-									<p>{{ photo.footer }}</p>
 								</div>
               </div>
             </li>
@@ -114,21 +120,8 @@
 								</div>
 								<div class="dashboard-content">
                   <div class="dashboard-detail-profile">
-                    <p class="key-value narrow"><span class="profile-key">名詞</span><span class="profile-value">：{{ lang.n }}</span></p>
-										<p class="key-value narrow"><span class="profile-key">動詞</span><span class="profile-value">：{{ lang.v }}</span></p>
-										<p class="key-value narrow"><span class="profile-key">形容詞</span><span class="profile-value">：{{ lang.adj }}</span></p>
-										<p class="key-value narrow"><span class="profile-key">副詞</span><span class="profile-value">：{{ lang.adv }}</span></p>
-										<p class="key-value narrow"><span class="profile-key">感動詞</span><span class="profile-value">：{{ lang.im }}</span></p>
-
-										<p class="key-value narrow additional"><span class="profile-key">助詞</span><span class="profile-value">：{{ lang.j }}</span></p>
-										<p class="key-value narrow additional"><span class="profile-key">接続詞</span><span class="profile-value">：{{ lang.conj }}</span></p>
-										<p class="key-value narrow additional"><span class="profile-key">助動詞</span><span class="profile-value">：{{ lang.auv }}</span></p>
-										<p class="key-value narrow additional"><span class="profile-key">接頭詞</span><span class="profile-value">：{{ lang.p }}</span></p>
-										<p class="key-value narrow additional"><span class="profile-key">連体詞</span><span class="profile-value">：{{ lang.t }}</span></p>
-										<p class="key-value narrow additional"><span class="profile-key">未知語</span><span class="profile-value">：{{ lang.unk}}</span></p>
 									</div>
 									<div class="dashboard-image">
-										最近の口ぐせ：ママ
                   	<div class="current-image" style="background-image: url(media/photos/baby2.jpg)">
                   	</div>
 									</div>
@@ -159,6 +152,21 @@
 		</div>
 	</div>
 </div>
+
+{% verbatim %}
+<script type="text/ng-template" id="word-list-modal.html">
+	<div class="modal-header">
+		<h3 class="modal-title">獲得済みの{{ pos }}</h3>
+	</div>
+	<div class="modal-body">
+		<span ng-repeat="word in words">{{ word.word }}　</span>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="closeModal()">閉じる</button>
+	</div>
+</script>
+{% endverbatim %}
+
 {% endblock content %}
 
 {% block load-libs-foot %}

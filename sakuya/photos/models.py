@@ -22,6 +22,7 @@ class Photo(models.Model):
     owner = models.ForeignKey(Child)
     stamp = models.ForeignKey(Stamp, blank=True, null=True)
     footer = models.CharField(max_length=30, blank=True)
+    motion = models.CharField(max_length=30, default='', blank=True)
     
     class Meta:
         ordering = ['-date']
