@@ -4,6 +4,10 @@ app = angular.module('DashboardApp');
 app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal', function($scope, $timeout, Child, $uibModal) {
 	$scope.motionChart = null;
 	$scope.langChart = null;
+	$scope.muscleChart = null;
+
+	$scope.muscleChartStep = 5;
+	$scope.currentMuscleRange = [0, 15];
 
 	$scope.langChartStep = 5;
 	$scope.currentLangRange = [0, 15];
@@ -16,7 +20,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 			'im': '感動詞'
 		}				
 
-	$scope.showAll = function() {
+	$scope.showAllPos = function() {
 		$('p.show-all').hide();
 		$('#google-line-chart').height('340px');
 		$('.dashboard-lang-frame').height('420px');
@@ -40,7 +44,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 		$scope.drawLangChart(self.currentLangPosList);
 	}
 
-	$scope.showMean = function() {
+	$scope.showMeanPos = function() {
 		$('.pos-mean').show();
 		$('.show-mean').hide();
 	}
@@ -59,14 +63,14 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 		});
 	}
 
-	$scope.forward = function() {
+	$scope.forwardLangChart = function() {
 		$scope.currentLangRange[0] += $scope.langChartStep;
 		$scope.currentLangRange[1] += $scope.langChartStep;
 		$scope.langChart.clearChart();
 		$scope.drawLangChart(self.currentLangPosList);
 	}
 
-	$scope.backward = function() {
+	$scope.backwardLangChart = function() {
 		var start = $scope.currentLangRange[0] - $scope.langChartStep;
 		if (start < 0) {
 			return;
@@ -159,9 +163,51 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 		});
 	}
 
+	$scope.drawMuscleChart = function(muscleList) {
+		var container = document.getElementById('google-muscle-chart');
+		var dataTable = new google.visualization.DataTable();
+		dataTable.addColumn('date', '生後(年月日)');
+		dataTable.addColumn('number', '腕力');
+		var child = new Child($('#dashboard-internal-token').text());
+		child.muscle($scope.currentMuscleRange, muscleList, function(data){
+			rows = [];
+			var strengthData = data['strength'];
+			var count = strengthData['count'];
+			for (var i = 0; i < count; ++i) {
+				var sampleData = strengthData['values'][i];
+				rows.push([new Date(sampleData.years, sampleData.months, sampleData.days), sampleData.value]);
+			}
+			dataTable.addRows(rows)
+			var options = {
+				series: {
+					0: {axis: 'N'}		
+				},
+				axes: {
+					y: {
+						N: {label: 'ニュートン'},
+						all: {
+							range: {
+								min: 0	
+							}
+						},
+					},
+					x: {
+						all: {
+							range: {
+							}
+						}
+					}
+				},
+			}
+			$scope.muscleChart = new google.charts.Line(document.getElementById('google-muscle-chart'));
+			$scope.muscleChart.draw(dataTable, options);
+		});
+	}
+
 	function drawChart() {
 		$scope.drawMotionChart(['neck_fix', 'rolling_over', 'sit', 'crawl', 'pullup', 'standup', 'walk']);
 		$scope.drawLangChart(self.currentLangPosList);
+		$scope.drawMuscleChart(['strength']);
 	}
 	google.load("visualization", "1", {packages: ["timeline", "line"], callback: drawChart});
 }]);

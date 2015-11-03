@@ -85,7 +85,7 @@
 								</div>
 								<div class="dashboard-content">
                   <div class="dashboard-pos-list">
-										<div class="key-value required"><span class="pos-key">名詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('n')">{{ lang.n }}</span><span class="pos-mean">({{ lang_mean.n }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">名詞</span><span class="separator">：</span><p class="pos-value" ng-click="openWordListModal('n')"><span>{{ lang.n }}</span><span class="pos-mean">({{ lang_mean.n }})</span></p></div>
 										<div class="key-value required"><span class="pos-key">動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('v')">{{ lang.v }}</span><span class="pos-mean">({{ lang_mean.v }})</span></p></div>
 										<div class="key-value required"><span class="pos-key">形容詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adj')">{{ lang.adj }}</span><span class="pos-mean">({{ lang_mean.adj }})</span></p></div>
 										<div class="key-value required"><span class="pos-key">副詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adv')">{{ lang.adv }}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
@@ -95,16 +95,16 @@
 										<div class="key-value narrow additional"><span class="pos-key">助動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('auv')">{{ lang.auv }}</span><span class="pos-mean">({{ lang_mean.auv }})</span></p></div>
 										<div class="key-value narrow additional"><span class="pos-key">接頭詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('p')">{{ lang.p }}</span><span class="pos-mean">({{ lang_mean.p }})</span></p></div>
 										<div class="key-value narrow additional"><span class="pos-key">連体詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('t')">{{ lang.t }}</span><span class="pos-mean">({{ lang_mean.t }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">未知語</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('unk')">{{ lang.unk}}</span><span class="pos-mean">({{ lang_mean.unk }})</span></p></div>
-										<p class="show-all" ng-click="showAll()">全て表示</p>
-										<p class="show-mean" ng-click="showMean()">{{ all_child_number }}人の平均を表示</p>
+										<div class="key-value narrow additional"><span class="pos-key">未知語</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('unk')">{{ lang.unk}}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
+										<p class="show-all" ng-click="showAllPos()">全て表示</p>
+										<p class="show-mean" ng-click="showMeanPos()">{{ all_child_number }}人の平均を表示</p>
 									</div>
 									<div class="dashboard-lang-chart">
                   	<div class="chart-container">
 											<div id="google-line-chart"></div>
 											<div>
-												<div class="backward-arrow" ng-click="backward()" style="background-image: url({% static 'icons/arrow004_r.jpg' %}"></div>
-												<div class="forward-arrow" ng-click="forward()" style="background-image: url({% static 'icons/arrow004.jpg' %}"></div>
+												<div class="backward-arrow" ng-click="backwardLangChart()" style="background-image: url({% static 'icons/arrow004_r.jpg' %}"></div>
+												<div class="forward-arrow" ng-click="forwardLangChart()" style="background-image: url({% static 'icons/arrow004.jpg' %}"></div>
 											</div>
                   	</div>
 									</div>
@@ -114,15 +114,21 @@
               </div>
             </li>
 						<li>
-							<div class="dashboard-frame">
+							<div class="dashboard-muscle-frame">
                 <div class="dashboard-header">
-									<h2>腕力</h2>
+									<h2>筋力</h2>
 								</div>
 								<div class="dashboard-content">
-                  <div class="dashboard-detail-profile">
+                  <div class="dashboard-muscle-list">
+										<p class="show-mean" ng-click="showMean()">{{ all_child_number }}人の平均を表示</p>
 									</div>
-									<div class="dashboard-image">
-                  	<div class="current-image" style="background-image: url(media/photos/baby2.jpg)">
+									<div class="dashboard-muscle-chart">
+                  	<div class="chart-container">
+											<div id="google-muscle-chart"></div>
+											<div>
+												<div class="backward-arrow" ng-click="backwardLangChart()" style="background-image: url({% static 'icons/arrow004_r.jpg' %}"></div>
+												<div class="forward-arrow" ng-click="forwardLangChart()" style="background-image: url({% static 'icons/arrow004.jpg' %}"></div>
+											</div>
                   	</div>
 									</div>
                 </div>

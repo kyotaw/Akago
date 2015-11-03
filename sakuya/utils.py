@@ -1,4 +1,8 @@
 from django.http import Http404
+from django.contrib.auth import authenticate, login
+
+from sakuya.accounts.models import Child
+
 
 def get_active_user(request):
     if request.user.is_authenticated():

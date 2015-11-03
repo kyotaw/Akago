@@ -206,9 +206,26 @@ div.narrow {
   float: right;
   cursor: pointer;
 }
+.dashboard-muscle-frame {
+  margin: 15px 30px 0;
+  height: 330px;
+}
+.dashboard-muscle-list {
+  width: 25%;
+  display: inline-block;
+}
+.dashboard-muscle-chart {
+  width: 75%;
+  display: inline-block;
+  float: right;
+  text-align: left;
+}
 #google-timeline-chart {
   height: 250px;
 }
 #google-line-chart {
+  height: 250px;
+}
+#google-muscle-chart {
   height: 250px;
 }

@@ -4,6 +4,7 @@ app.factory('Child', ['$http', function($http) {
 
 	var VOCABURARY_URL = '/vocaburary/';
 	var MOTIONS_URL = '/motions/';
+	var STRENGTH_URL = '/strength/';
 
 	var constructor = function(id) {
 		this.id = id;
@@ -37,6 +38,28 @@ app.factory('Child', ['$http', function($http) {
 			for (var i = 0; i < motionList.length; ++i) {
 				url += ('&' + motionList[i]);
 			}
+			$http.get(
+				url
+			).success(function(data, status) {
+				if (success) {
+					success(data);
+				}
+			}).error(function(data) {
+				if (error) {
+					error(data);
+				}
+			});
+		},
+
+		muscle: function(range, muscleList, success, error) {
+			var url = STRENGTH_URL + this.id + '?';
+			if (range != null) {
+				url += ('start_month=' + range[0] + '&' + 'end_month=' + range[1]);
+			}
+			for (var i = 0; i < muscleList.length; ++i) {
+				url += ('&' + muscleList[i]);
+			}
+
 			$http.get(
 				url
 			).success(function(data, status) {
