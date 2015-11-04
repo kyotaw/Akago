@@ -32,7 +32,7 @@ def record(request):
         raise Http404
 
     try:
-        all_child = Child.objects.get(id=4)
+        all_child = Child.objects.get(name='allofthem')
         all_child.muscle_set.create(strength=float(strength), date=now())
     except:
         raise Http404

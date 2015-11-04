@@ -30,6 +30,7 @@ def record(request):
         raise Http404
 
     child = get_owner_child(request, user)
+    all_child = Child.objects.get(name='allofthem')
     
     speech = request.GET['speech_text']
     words = tokenizer.tag(speech)
@@ -58,28 +59,29 @@ def record(request):
                     owner=child)
                 new_vocab = True
                 verygood = True
+
+                try:
+                    all_child.word_set.get(lemma=vocab_word.lemma, tag=vocab_word.tag)
+                except:
+                    all_child.word_set.create(
+                        lemma=vocab_word.lemma,
+                        pron=vocab_word.pron,
+                        base=vocab_word.base,
+                        pos1=vocab_word.pos1,
+                        pos2=vocab_word.pos2,
+                        pos3=vocab_word.pos3,
+                        conj_type=vocab_word.conj_type,
+                        conj_form=vocab_word.conj_form,
+                        tag=vocab_word.tag,
+                        date=now())
             
             comment += vocab_word.__str__()
             if new_vocab:
                 comment += 'NEW!'
             comment += '　'
 
-            try:
-                all_child = Child.objects.get(id=4)
-                all_child.word_set.get(lemma=vocab_word.lemma, tag=vocab_word.tag)
-            except:
-                all_child.word_set.create(
-                    lemma=vocab_word.lemma,
-                    pron=vocab_word.pron,
-                    base=vocab_word.base,
-                    pos1=vocab_word.pos1,
-                    pos2=vocab_word.pos2,
-                    pos3=vocab_word.pos3,
-                    conj_type=vocab_word.conj_type,
-                    conj_form=vocab_word.conj_form,
-                    tag=vocab_word.tag,
-                    date=now())
-
+    if not verygood:
+        return JsonResponse({})
 
     speech_file = request.FILES['speech_file']
     date = now()
@@ -88,13 +90,12 @@ def record(request):
     
     try:
         photo = Photo.objects.create(title=speech, audio=speech_file, comment=comment, date=date, age=age, owner=child, footer=footer)
-        if verygood:
-            try:
-                stamp = Stamp.objects.get(title='VeryGood')
-                photo.stamp = stamp
-                photo.save()
-            except:
-                pass
+        try:
+            stamp = Stamp.objects.get(title='VeryGood')
+            photo.stamp = stamp
+            photo.save()
+        except:
+            pass
     except IntegrityError:
         raise Http404
 
