@@ -30,6 +30,9 @@ nav.navbar-default {
   text-align: right;
 }
 /*general*/
+#internal-childid-token {
+  display: none;
+}
 li {
   list-style: none;
 }

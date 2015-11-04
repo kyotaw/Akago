@@ -11,14 +11,28 @@ function initInst(inst, fields, attrs) {
 }
 
 
-app.factory('Photo', ['FileUpload', '$http', function(FileUpload, $http) {
-	var fields = {'imageFile': null, 'url': '', 'width': '150px', 'height': '150px', 'title': '', 'comment': '', 'owner': ''};
+app.factory('Photo', ['$http', function($http) {
+	var fields = {'title': '', 'imageFile': null, 'image': '', 'audio': '', 'movie': '', 'date': '', 'age': '', 'comment': '', 'owner': '', 'stamp': '', 'footer': '', 'motion': ''};
 	
-	var UPLOAD_URL = '/photos/';
-	var SAVE_URL = '/photos/';
+	var PHOTOS_URL = '/photos/';
 	
 	var constructor = function(attrs) {
 		initInst(this, fields, attrs);
+	}
+
+	constructor.query = function(child_id, success, error) {
+		var url = PHOTOS_URL + child_id;
+		$http.get(
+			url
+		).success(function(data, status) {
+			if (success) {
+				success(data);
+			}
+		}).error(function(data) {
+			if (error) {
+				error(data);
+			}
+		});
 	}
 
 	constructor.prototype = {
@@ -26,11 +40,9 @@ app.factory('Photo', ['FileUpload', '$http', function(FileUpload, $http) {
 			this.imageFile = imageFile;
 			var reader = new FileReader();
 			reader.onloadend = (function(photo){ return function(e){
-				photo.url = e.target.result;
+				photo.image = e.target.result;
 				image = new Image();
 				image.onload = function() {
-					photo.width = image.width;
-					photo.height = image.height;
 					endcallback();
 				};
 				image.src = e.target.result;
@@ -51,7 +63,7 @@ app.factory('Photo', ['FileUpload', '$http', function(FileUpload, $http) {
 			}
 
 			$http.post(
-				SAVE_URL,
+				PHOTOS_URL,
 				fd,
 				{
 					transformRequest: angular.identity,

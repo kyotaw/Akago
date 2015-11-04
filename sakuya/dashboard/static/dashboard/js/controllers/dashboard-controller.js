@@ -50,7 +50,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 	}
 
 	$scope.openWordListModal = function(pos) {
-		var child = new Child($('#dashboard-internal-token').text());
+		var child = new Child($('#internal-childid-token').text());
 		child.words(null, [pos], function(data){
 			$uibModal.open({
 				templateUrl: 'word-list-modal.html',
@@ -88,7 +88,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 			dataTable.addColumn('number', $scope.currentLangPosList[key]);
 		}
 		
-		var child = new Child($('#dashboard-internal-token').text());
+		var child = new Child($('#internal-childid-token').text());
 		child.words($scope.currentLangRange, [], function(data){
 			var res_list = [];
 			for (key in $scope.currentLangPosList) {
@@ -142,7 +142,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 			['7', '二足歩行', '12〜15ヶ月', 12000, 15000],
 		]);
 		
-		var child = new Child($('#dashboard-internal-token').text());
+		var child = new Child($('#internal-childid-token').text());
 		child.motions(motionList, function(data) {
 			var colors = [];
 			for (var i = 0; i < motionList.length; ++i) {
@@ -168,7 +168,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 		var dataTable = new google.visualization.DataTable();
 		dataTable.addColumn('date', '生後(年月日)');
 		dataTable.addColumn('number', '腕力');
-		var child = new Child($('#dashboard-internal-token').text());
+		var child = new Child($('#internal-childid-token').text());
 		child.muscle($scope.currentMuscleRange, muscleList, function(data){
 			rows = [];
 			var strengthData = data['strength'];

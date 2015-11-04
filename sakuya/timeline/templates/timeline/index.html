@@ -37,13 +37,13 @@
 							{% verbatim %}
 							<div class="timeline-frame edit-frame">
 								<div class="timeline-header">
-									<input class="photo-title-input" type="text" placeholder="フォトのタイトル" ng-model="photo.title"></input>
+									<input class="photo-title-input" type="text" placeholder="フォトのタイトル" ng-model="new_photo.title"></input>
 								</div>
 								<div class="photo-container">
 									<div id="user-drop-image" class="timeline-photo-image"
-				            ng-class="{'image-drop-area': photo.imageFile==null}"
-				            style="background-image: url({{ photo.url }});">
-				            <div class="image-placeholder" ng-show="photo.imageFile==null">
+				            ng-class="{'image-drop-area': new_photo.imageFile==null}"
+				            style="background-image: url({{ new_photo.image }});">
+				            <div class="image-placeholder" ng-show="new_photo.imageFile==null">
 				              <span>画像ファイルをここにドロップしてください</span>
 				            </div>
 				          </div>
@@ -60,34 +60,26 @@
 							</div>
 							{% endverbatim %}
 						</li>
-          {% for photo in active_child.photo_set.all %}
-            <li>
+						{% verbatim %}
+            <li ng-repeat="photo in photoList" >
               <div class="timeline-frame">
                 <div class="timeline-header">
-                  <div class="timeline-photo-title" ng-click="delete({{photo.id}})">
+                  <div class="timeline-photo-title">
                     <h2>{{ photo.title }}</h2>
                     <span>{{ photo.date }}</span>
                     <span> - </span>
                     <span>{{ photo.age }}</span>
                   </div>
-                  {% if photo.stamp.image %}
-                  <div class="timeline-stamp-image" style="background-image: url(media/{{ photo.stamp.image }})">
+                  <div ng-if="photo.stamp != ''" class="timeline-stamp-image" style="background-image: url(media/{{ photo.stamp }})">
                   </div>
-                  {% endif %}
                 </div>
-								{% if photo.image %}
-                <div class="photo-container">
+                <div ng-if="photo.image != ''" class="photo-container">
                   <div class="timeline-photo-image" style="background-image: url(media/{{ photo.image }})">
                   </div>
                 </div>
-								{% endif %}
-
-								{% if photo.audio %}
-								<div class="photo-container">
-									<audio class="timeline-photo-audio" src="media/{{ photo.audio }}" controls>
-									</audio>
+								<div ng-if="photo.audio != ''" class="photo-container">
+									<audio class="timeline-photo-audio" ng-src="{{ photo.audio }}" controls></audio>
 								</div>
-								{% endif %}
 								<div class="photo-comment">
 									<p>{{ photo.comment }}</p>
 								</div>
@@ -96,7 +88,7 @@
 								</div>
               </div>
             </li>
-          {% endfor %}
+						{% endverbatim %}
           </ol>
         </div>
 			</div>
@@ -111,6 +103,7 @@
     				<div class="profile-image" style="background-image: url('media/{{ active_child.image }}')" ></div>
     			</div>
           <p class="profile-comment">{{ active_child.comment}}</p>
+					<p id="internal-childid-token">{{ active_child.id }}</p>
         </div>
 				{% endif %}
 			</div>

@@ -1,7 +1,16 @@
 app = angular.module('TimelineApp');
 
 app.controller('TimelineController', ['$scope', '$timeout', '$location', 'Photo', 'Util', function($scope, $timeout, $location, Photo, Util) {
-	$scope.photo = new Photo();
+	$scope.new_photo = new Photo();
+
+	$scope.childId = $('#internal-childid-token').text();
+	$scope.photoList = [];
+	Photo.query($scope.childId, function(data){
+		var photoData = data['photos'];
+		for (var i = 0; i < photoData.length; ++i) {
+			$scope.photoList.push(new Photo(photoData[i]));
+		}
+	});
 
 	var imageArea = angular.element(document.getElementById('user-drop-image'));
 	imageArea.on('dragenter', Util.stopEvent);
@@ -22,7 +31,7 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', 'Photo'
 		}
 		imageArea.off('drop');
 		
-		$scope.photo.loadImage(imageFile, function(){
+		$scope.new_photo.loadImage(imageFile, function(){
 			$timeout(function(){});
 		});
 		return Util.stopEvent(e);
@@ -38,12 +47,12 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', 'Photo'
 	}
 
 	$scope.save = function() {
-		if ($scope.photo.imageFile == null) {
+		if ($scope.new_photo.imageFile == null) {
 			return;
 		}
 		content = $('#photo-comment-input>.photo-comment-placeholder');
-		$scope.photo.comment = content.val();
-		$scope.photo.save(function(data){
+		$scope.new_photo.comment = content.val();
+		$scope.new_photo.save(function(data){
 			location.href = '/timeline';
 		});
 	}
