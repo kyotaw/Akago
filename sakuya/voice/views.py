@@ -89,7 +89,7 @@ def record(request):
     footer = 'Voiceからの投稿'
     
     try:
-        photo = Photo.objects.create(title=speech, audio=speech_file, comment=comment, date=date, age=age, owner=child, footer=footer)
+        photo = Photo.objects.create(title=speech, image=None, audio=speech_file, movie=None, comment=comment, date=date, age=age, owner=child, footer=footer)
         try:
             stamp = Stamp.objects.get(title='VeryGood')
             photo.stamp = stamp

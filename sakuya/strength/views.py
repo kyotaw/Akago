@@ -49,7 +49,7 @@ def record(request):
        comment = '新記録！'
     
     try:
-        photo = Photo.objects.create(title=title, date=now(), age=age, owner=child, comment=comment, footer=footer)
+        photo = Photo.objects.create(title=title, image=None, audio=None, movie=None, date=now(), stamp=None, age=age, owner=child, comment=comment, footer=footer)
         if high_score:
             try:
                 stamp = Stamp.objects.get(title='VeryGood')

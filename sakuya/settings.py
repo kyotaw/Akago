@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'swampdragon',
     'sakuya.accounts',
     'sakuya.photos',
     'sakuya.timeline',
@@ -123,3 +124,8 @@ MEDIA_ROOT = 'sakuya/media/'
 
 LOGIN_REDIRECT_URL = '/timeline/'
 LOGIN_URL = '/'
+
+SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
+DRAGON_URL = 'http://localhost:9999/'
+SWAMP_DRAGON = { 'fff': 'sss' }
+

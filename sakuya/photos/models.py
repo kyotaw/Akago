@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.timezone import now
+
+from swampdragon.models import SelfPublishModel
+
 from sakuya.accounts.models import Child
+from sakuya.photos.serializers import PhotoSerializer
 
 
 class Stamp(models.Model):
@@ -11,7 +15,9 @@ class Stamp(models.Model):
         return self.title
     
 
-class Photo(models.Model):
+class Photo(SelfPublishModel, models.Model):
+    serializer_class = PhotoSerializer
+
     title = models.CharField(max_length=30, blank=True)
     image = models.ImageField(upload_to='photos', blank=True)
     audio = models.FileField(upload_to='audio', blank=True)

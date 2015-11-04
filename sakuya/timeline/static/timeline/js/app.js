@@ -1,4 +1,4 @@
-app = angular.module('TimelineApp', [])
+app = angular.module('TimelineApp', ['SwampDragonServices'])
 	.config(function($httpProvider) {
 		$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 		$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';

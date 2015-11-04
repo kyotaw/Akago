@@ -32,7 +32,7 @@ def upload(request):
     age = child.detail_age()
 
     try:
-        photo = Photo.objects.create(title=title, comment=comment, date=date, image=image_file, age=age, owner=child)
+        photo = Photo.objects.create(title=title, audio=None, movie=None, stamp=None, comment=comment, date=date, image=image_file, age=age, owner=child)
     except IntegrityError:
         raise Http404
 
@@ -40,6 +40,7 @@ def upload(request):
 
 @require_GET
 def query(request, child_id):
+#    import pdb; pdb.set_trace()
     res = {}
     
     try:

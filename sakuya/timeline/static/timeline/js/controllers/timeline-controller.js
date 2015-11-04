@@ -1,6 +1,6 @@
 app = angular.module('TimelineApp');
 
-app.controller('TimelineController', ['$scope', '$timeout', '$location', 'Photo', 'Util', function($scope, $timeout, $location, Photo, Util) {
+app.controller('TimelineController', ['$scope', '$timeout', '$location', '$dragon', 'Photo', 'Util', function($scope, $timeout, $location, $dragon, Photo, Util) {
 	$scope.new_photo = new Photo();
 
 	$scope.childId = $('#internal-childid-token').text();
@@ -9,6 +9,27 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', 'Photo'
 		var photoData = data['photos'];
 		for (var i = 0; i < photoData.length; ++i) {
 			$scope.photoList.push(new Photo(photoData[i]));
+		}
+	});
+
+	$scope.channel = 'photos';
+	$dragon.onReady(function() {
+		$dragon.subscribe('photo-router', $scope.channel, { owner_id: $scope.childId }).then(function(response) {
+			$scope.dataMapper = new DataMapper(response.data);
+		});
+		$dragon.getList('photo-router', { owner_id: $scope.childId }).then(function(response) {
+			$scope.photoList = []
+			for (var i = 0; i < response.data.length; ++i) {
+				$scope.photoList.push(new Photo(response.data[i]));
+			}
+		});
+	});
+
+	$dragon.onChannelMessage(function(channels, message) {
+		if (indexOf.call(channels, $scope.channel) > -1) {
+	    	$scope.$apply(function() {
+		    	$scope.dataMapper.mapData($scope.photoList, message);
+			});
 		}
 	});
 
