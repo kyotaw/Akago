@@ -65,7 +65,7 @@ def record(request):
             comment += '　'
 
             try:
-                all_child = Child.objects.get(id=4)
+                all_child = Child.objects.get(name='allofthem')
                 all_child.word_set.get(lemma=vocab_word.lemma, tag=vocab_word.tag)
             except:
                 all_child.word_set.create(
