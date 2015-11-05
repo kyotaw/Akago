@@ -93,8 +93,7 @@
         </div>
 			</div>
 			<div class="col-xs-3">
-				{% if active_child %}
-				<div class="child-profile-plate">
+				<div class="active-child-profile-plate">
           <div class="profile-header">
             <h3>{{ active_child.name }}</h3>
             <p class="profile-age">{{ active_child.detail_age }}</p>
@@ -105,7 +104,15 @@
           <p class="profile-comment">{{ active_child.comment}}</p>
 					<p id="internal-childid-token">{{ active_child.id }}</p>
         </div>
-				{% endif %}
+				{% for child in child_list %}
+				<div class="child-profile-plate">
+          <div class="child-thumbnail" style="background-image: url('media/{{ child.image }}')"></div>
+					<div class="child-brief">
+          	<h3>{{ child.name}}</h3>
+						<p>{{ child.detail_age }}</p>
+					</div>
+        </div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

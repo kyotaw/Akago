@@ -29,12 +29,12 @@
             <li>
               <div class="dashboard-frame">
                 <div class="dashboard-header">
-									<h2>まさし</h2>
+									<h2>{{ active_child.name}}</h2>
 								</div>
 								<div class="dashboard-content">
                   <div class="dashboard-detail-profile">
-                    <p class="key-value"><span class="profile-key">生年月日</span><span class="profile-value">：2015/5/2 (0才5ヶ月12日)</span></p>
-										<p class="key-value"><span class="profile-key">性別</span><span class="profile-value">：男の子</span></p>
+                    <p class="key-value"><span class="profile-key">生年月日</span><span class="profile-value">：{{ active_child.formatted_birth }} ({{ active_child.detail_age}})</span></p>
+										<p class="key-value"><span class="profile-key">性別</span><span class="profile-value">：{{ active_child.sex}}</span></p>
 										<p class="key-value"><span class="profile-key">身長</span><span class="profile-value">：73cm</span></p>
 										<p class="key-value"><span class="profile-key">体重</span><span class="profile-value">：14kg</span></p>
                   </div>
@@ -52,6 +52,42 @@
 									<p>{{ photo.footer }}</p>
 								</div>
               </div>
+						</li>
+						<li>
+							<div class="dashboard-lang-frame">
+                <div class="dashboard-header">
+									<h2>言語能力</h2>
+								</div>
+								<div class="dashboard-content">
+                  <div class="dashboard-pos-list">
+										<div class="key-value required"><span class="pos-key">名詞</span><span class="separator">：</span><p class="pos-value" ng-click="openWordListModal('n')"><span class="pos-mine">{{ lang.n }}</span><span class="pos-mean">({{ lang_mean.n }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('v')"><span class="pos-mine">{{ lang.v }}</span><span class="pos-mean">({{ lang_mean.v }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">形容詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adj')"><span class="pos-mine">{{ lang.adj }}</span><span class="pos-mean">({{ lang_mean.adj }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">副詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adv')"><span class="pos-mine">{{ lang.adv }}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
+										<div class="key-value required"><span class="pos-key">感動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('im')"><span class="pos-mine">{{ lang.im }}</span><span class="pos-mean">({{ lang_mean.im }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">助詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('j')"><span class="pos-mine">{{ lang.j }}</span><span class="pos-mean">({{ lang_mean.j }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">接続詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('conj')"><span class="pos-mine">{{ lang.conj }}</span><span class="pos-mean">({{ lang_mean.conj }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">助動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('auv')"><span class="pos-mine">{{ lang.auv }}</span><span class="pos-mean">({{ lang_mean.auv }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">接頭詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('p')"><span class="pos-mine">{{ lang.p }}</span><span class="pos-mean">({{ lang_mean.p }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">連体詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('t')"><span class="pos-mine">{{ lang.t }}</span><span class="pos-mean">({{ lang_mean.t }})</span></p></div>
+										<div class="key-value narrow additional"><span class="pos-key">未知語</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('unk')"><span class="pos-mine">{{ lang.unk}}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
+										<p class="show-all" ng-click="showAllPos()">全て表示</p>
+										<p class="show-mean" ng-click="showMeanPos()">{{ all_child_number }}人の平均を表示</p>
+									</div>
+									<div class="dashboard-lang-chart">
+                  	<div class="chart-container">
+											<div id="google-line-chart"></div>
+											<div>
+												<div class="backward-arrow" ng-click="backwardLangChart()" style="background-image: url({% static 'icons/arrow004_r.jpg' %}"></div>
+												<div class="forward-arrow" ng-click="forwardLangChart()" style="background-image: url({% static 'icons/arrow004.jpg' %}"></div>
+											</div>
+                  	</div>
+									</div>
+                </div>
+								<div class="dashboard-footer">
+								</div>
+              </div>
+            </li>
 						<li>
 							<div class="dashboard-motion-frame">
                 <div class="dashboard-header">
@@ -75,41 +111,6 @@
                 </div>
 								<div class="dashboard-motion-footer">
 									<p></p>
-								</div>
-              </div>
-            </li>
-						<li>
-							<div class="dashboard-lang-frame">
-                <div class="dashboard-header">
-									<h2>言語能力</h2>
-								</div>
-								<div class="dashboard-content">
-                  <div class="dashboard-pos-list">
-										<div class="key-value required"><span class="pos-key">名詞</span><span class="separator">：</span><p class="pos-value" ng-click="openWordListModal('n')"><span>{{ lang.n }}</span><span class="pos-mean">({{ lang_mean.n }})</span></p></div>
-										<div class="key-value required"><span class="pos-key">動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('v')">{{ lang.v }}</span><span class="pos-mean">({{ lang_mean.v }})</span></p></div>
-										<div class="key-value required"><span class="pos-key">形容詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adj')">{{ lang.adj }}</span><span class="pos-mean">({{ lang_mean.adj }})</span></p></div>
-										<div class="key-value required"><span class="pos-key">副詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('adv')">{{ lang.adv }}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
-										<div class="key-value required"><span class="pos-key">感動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('im')">{{ lang.im }}</span><span class="pos-mean">({{ lang_mean.im }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">助詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('j')">{{ lang.j }}</span><span class="pos-mean">({{ lang_mean.j }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">接続詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('conj')">{{ lang.conj }}</span><span class="pos-mean">({{ lang_mean.conj }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">助動詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('auv')">{{ lang.auv }}</span><span class="pos-mean">({{ lang_mean.auv }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">接頭詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('p')">{{ lang.p }}</span><span class="pos-mean">({{ lang_mean.p }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">連体詞</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('t')">{{ lang.t }}</span><span class="pos-mean">({{ lang_mean.t }})</span></p></div>
-										<div class="key-value narrow additional"><span class="pos-key">未知語</span><span class="separator">：</span><p class="pos-value"><span ng-click="openWordListModal('unk')">{{ lang.unk}}</span><span class="pos-mean">({{ lang_mean.adv }})</span></p></div>
-										<p class="show-all" ng-click="showAllPos()">全て表示</p>
-										<p class="show-mean" ng-click="showMeanPos()">{{ all_child_number }}人の平均を表示</p>
-									</div>
-									<div class="dashboard-lang-chart">
-                  	<div class="chart-container">
-											<div id="google-line-chart"></div>
-											<div>
-												<div class="backward-arrow" ng-click="backwardLangChart()" style="background-image: url({% static 'icons/arrow004_r.jpg' %}"></div>
-												<div class="forward-arrow" ng-click="forwardLangChart()" style="background-image: url({% static 'icons/arrow004.jpg' %}"></div>
-											</div>
-                  	</div>
-									</div>
-                </div>
-								<div class="dashboard-footer">
 								</div>
               </div>
             </li>
@@ -141,19 +142,16 @@
         </div>
 			</div>
 			<div class="col-xs-3">
-				{% if active_child %}
+				{% for child in child_list %}
 				<div class="child-profile-plate">
-          <div class="profile-header">
-            <h3>{{ active_child.name }}</h3>
-            <p class="profile-age">{{ active_child.detail_age }}</p>
-          </div>
-          <div>
-    				<div class="profile-image" style="background-image: url('media/{{ active_child.image }}')" ></div>
-    			</div>
-          <p class="profile-comment">{{ active_child.comment}}</p>
-					<p id="internal-childid-token">{{ active_child.id }}</p>
+          <div class="child-thumbnail" style="background-image: url('media/{{ child.image }}')"></div>
+					<div class="child-brief">
+          	<h3 class="profile-comment">{{ child.name}}</h3>
+						<p class="profile-age">{{ child.detail_age }}</p>
+					</div>
         </div>
-				{% endif %}
+				{% endfor %}
+				<p id="internal-childid-token">{{ active_child.id }}</p>
 			</div>
 		</div>
 	</div>

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 
+
 class Medal(models.Model):
     title = models.CharField(max_length=30, blank=True)
     type = models.CharField(max_length=30, blank=True)
@@ -23,6 +24,9 @@ class Child(models.Model):
         months = (postnatal.days - 365 * years) // 31
         days = postnatal.days - 365 * years - 31 * months
         return str(years) + '歳' + str(months) + 'ヶ月' + str(days) + '日'
+
+    def formatted_birth(self):
+        return self.birth.strftime('%Y/%m/%d')
 
     def __str__(self):
         return self.name

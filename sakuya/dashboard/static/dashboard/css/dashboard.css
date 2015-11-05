@@ -24,30 +24,8 @@ ol.dashboard-item-list {
   background-size: cover;
   background-position: center;
 }
-.child-profile-plate {
-  background-color: white;
-  border: 1px solid #dcdcdc;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  width: 100%;
-}
-.profile-header {
-  margin: 15px;
-}
-.profile-age {
-  text-align: right;
-}
-.profile-image {
-  background-size: cover;
-  background-position: center;
-  height: 200px;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  border-radius: 5px;
-  margin: 0 5px;
-}
-.profile-comment {
-  margin: 15px;
+.frame-style {
+  margin: 15px 30px 0;
 }
 .dashboard-plate {
   background-color: white;
@@ -58,8 +36,8 @@ ol.dashboard-item-list {
   border: 1px solid white;
 }
 .dashboard-frame {
-  margin: 15px 30px 0;
   height: 300px;
+  margin: 15px 30px 0;
 }
 .dashboard-header {
   border-bottom: 2px solid #ffcc80;
@@ -130,8 +108,8 @@ ol.dashboard-item-list {
   text-align: left;
 }
 .dashboard-lang-frame {
-  margin: 15px 30px 0;
   height: 330px;
+  margin: 15px 30px 0;
 }
 .pos-key {
   width: 25%;
@@ -149,8 +127,11 @@ ol.dashboard-item-list {
   padding-left: 10px;
   display: inline-block;
   text-align: left;
+}
+.pos-mine {
   cursor: pointer;
   text-decoration: underline;
+  display: inline-block;
 }
 .pos-mean {
   padding-left: 5px;
@@ -205,8 +186,8 @@ div.narrow {
   cursor: pointer;
 }
 .dashboard-muscle-frame {
-  margin: 15px 30px 0;
   height: 330px;
+  margin: 15px 30px 0;
 }
 .dashboard-muscle-list {
   width: 25%;
@@ -226,4 +207,31 @@ div.narrow {
 }
 #google-muscle-chart {
   height: 250px;
+}
+.child-profile-plate {
+  background-color: white;
+  border: 1px solid #dcdcdc;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  width: 100%;
+  height: 82px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.child-thumbnail {
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+  float: left;
+  margin: 10px;
+  height: 60px;
+  width: 60px;
+}
+.child-brief {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  height: 60px;
+  width: 150px;
+  margin: 10px;
 }

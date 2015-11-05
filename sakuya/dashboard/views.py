@@ -25,11 +25,13 @@ def index(request):
 #    import pdb; pdb.set_trace()
     context = {}
 
-    children = request.user.child_set.all()
+    children = request.user.child_set.exclude(name='allofthem')
     context['children'] = children
     
     active_child = children[0] if len(children) > 0 else None
     context['active_child'] = active_child
+
+    context['child_list'] = children[1:]
 
     try:
         for photo in active_child.photo_set.all():
@@ -69,7 +71,7 @@ def index(request):
     context['all_child_number'] = all_child_number
     try:
         langMean = {}
-        all_child = Child.objects.get(id=4)
+        all_child = Child.objects.get(name='allofthem')
         langMean['n'] = all_child.word_set.filter(pos1='名詞').count() // all_child_number
         langMean['v'] = all_child.word_set.filter(pos1='動詞').count() // all_child_number
         langMean['adj'] = all_child.word_set.filter(pos1='形容詞').count() // all_child_number

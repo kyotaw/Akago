@@ -92,5 +92,8 @@ def record(request):
             pass
     except IntegrityError:
         raise Http404
+    
+    res = {}
+    res['new_words'] = new_words
 
-    return JsonResponse({})
+    return JsonResponse(res)

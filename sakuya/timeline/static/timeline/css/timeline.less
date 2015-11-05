@@ -8,8 +8,7 @@ ol.timeline-item-list {
 .plate-style {
 	background-color: white;
 	border: 1px solid #dcdcdc;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
+  border-radius: 5px;
 }
 
 .input-style {
@@ -34,9 +33,10 @@ ol.timeline-item-list {
 
 // profile
 
-.child-profile-plate {
+.active-child-profile-plate {
 	.plate-style;
 	width: 100%;
+  margin-bottom: 10px;
 }
 
 .profile-header {
@@ -50,14 +50,36 @@ ol.timeline-item-list {
 .profile-image {
 	.image-style;
 	height: 200px;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-	border-radius: 5px;
 	margin: 0 5px;
 }
 
 .profile-comment {
 	margin: 15px;
+}
+
+.child-profile-plate {
+	.plate-style;
+	width: 100%;
+  height: 82px;
+  margin-bottom: 10px;
+}
+
+.child-thumbnail {
+  .image-style;
+  display: inline-block;
+  float: left;
+  margin: 10px;
+	height: 60px;
+  width: 60px;
+}
+
+.child-brief {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  height: 60px;
+  width: 150px;
+	margin: 10px;
 }
 
 
@@ -71,16 +93,16 @@ ol.timeline-item-list {
 
 .timeline-menu {
 	width: 100%;
-	height: 50px;
+	height: 39px;
 	border-bottom: solid 1px #d3d3d3;
   background-color: #ffe0b2;
 	//background: linear-gradient(#bc8f8f, white);
 }
 
 .menu-list {
-	height: 50px;
+	height: 39px;
 	margin: 0;
-	padding: 9px 10px;
+	padding: 3px 10px;
 
 }
 

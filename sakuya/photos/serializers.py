@@ -18,3 +18,6 @@ class PhotoSerializer(ModelSerializer):
     
     def serialize_stamp(self, obj):
         return obj.stamp.image.url if obj.stamp and obj.stamp.image else ''
+    
+    def serialize_date(self, obj):
+        return obj.date.strftime('%Y/%m/%d %H:%M:%S')

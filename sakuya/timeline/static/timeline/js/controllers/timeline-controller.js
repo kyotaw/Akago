@@ -13,16 +13,17 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', '$drago
 		});
 		$dragon.getList('photo-router', { owner_id: $scope.childId }).then(function(response) {
 			$scope.photoList = response.data
-			for (var i = 0; i < response.data.length; ++i) {
-				//$scope.photoList.push(new Photo(response.data[i]));
-			}
 		});
 	});
 
 	$dragon.onChannelMessage(function(channels, message) {
 		if (indexOf.call(channels, $scope.channel) > -1) {
 	    	$scope.$apply(function() {
-		    	$scope.dataMapper.mapData($scope.photoList, message);
+				if (message['action'] === 'created') {
+					$scope.photoList.unshift(message['data']);
+				} else {
+		    		$scope.dataMapper.mapData($scope.photoList, message);
+				}
 			});
 		}
 	});

@@ -32,34 +32,9 @@ ol.dashboard-item-list {
 	background-position: center;
 }
 
-// profile
-
-.child-profile-plate {
-	.plate-style;
-	width: 100%;
+.frame-style {
+  margin: 15px 30px 0;
 }
-
-.profile-header {
-	margin: 15px;
-}
-
-.profile-age {
-	text-align: right;
-}
-
-.profile-image {
-	.image-style;
-	height: 200px;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-	border-radius: 5px;
-	margin: 0 5px;
-}
-
-.profile-comment {
-	margin: 15px;
-}
-
 
 // dashboard
 
@@ -73,6 +48,7 @@ ol.dashboard-item-list {
 .dashboard-frame {
   margin: 15px 30px 0;
   height:300px;
+  .frame-style;
 }
 
 .dashboard-header {
@@ -162,6 +138,7 @@ ol.dashboard-item-list {
 .dashboard-lang-frame {
   margin: 15px 30px 0;
   height: 330px;
+  .frame-style;
 }
 
 .pos-key {
@@ -182,8 +159,12 @@ ol.dashboard-item-list {
   padding-left: 10px;
   display: inline-block;
   text-align: left;
+}
+
+.pos-mine {
   cursor: pointer;
   text-decoration: underline;
+  display: inline-block;
 }
 
 .pos-mean {
@@ -248,8 +229,8 @@ div.narrow {
 // muscle
 
 .dashboard-muscle-frame {
-  margin: 15px 30px 0;
   height: 330px;
+  .frame-style;
 }
 
 .dashboard-muscle-list {
@@ -274,4 +255,32 @@ div.narrow {
 
 #google-muscle-chart {
   height: 250px;
+}
+
+// profile
+
+.child-profile-plate {
+	.plate-style;
+	width: 100%;
+  height: 82px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.child-thumbnail {
+  .image-style;
+  display: inline-block;
+  float: left;
+  margin: 10px;
+	height: 60px;
+  width: 60px;
+}
+
+.child-brief {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  height: 60px;
+  width: 150px;
+	margin: 10px;
 }

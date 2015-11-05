@@ -9,9 +9,13 @@ from sakuya.photos.models import Photo, Stamp
 def index(request):
 #    import pdb; pdb.set_trace()
     
-    children = request.user.child_set.all()
+    context = {}
+
+    children = request.user.child_set.exclude(name='allofthem')
+    context['children'] = children
     active_child = children[0] if len(children) > 0 else None
-    context = Context({ 'children': children, 'active_child': active_child })
+    context['active_child'] = active_child
+    context['child_list'] = children[1:]
 
     return render(request, 'timeline/index.html', context)
     
