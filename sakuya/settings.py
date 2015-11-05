@@ -126,6 +126,10 @@ LOGIN_REDIRECT_URL = '/timeline/'
 LOGIN_URL = '/'
 
 SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
-DRAGON_URL = 'http://localhost:9999/'
+
+# for ec2
+DRAGON_URL = 'http://52.68.38.0:9999/'
+SWAMP_DRAGON_HOST = '0.0.0.0'
+SWAMP_DRAGON_PORT = '9999'
 SWAMP_DRAGON = { 'fff': 'sss' }
 

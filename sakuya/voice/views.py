@@ -35,11 +35,9 @@ def record(request):
     speech = request.GET['speech_text']
     words = tokenizer.tag(speech)
 
-    verygood = False
-    comment = ""
+    new_words = []
     for word in words:
         if word.lemma != ' ' and word.lemma != '　':
-            new_vocab = False
             try:
                 vocab_word = child.word_set.get(lemma=word.lemma, tag=word.tag)
             except Word.DoesNotExist:
@@ -57,8 +55,6 @@ def record(request):
                     tag= word.tag,
                     date=now(),
                     owner=child)
-                new_vocab = True
-                verygood = True
 
                 try:
                     all_child.word_set.get(lemma=vocab_word.lemma, tag=vocab_word.tag)
@@ -74,19 +70,17 @@ def record(request):
                         conj_form=vocab_word.conj_form,
                         tag=vocab_word.tag,
                         date=now())
-            
-            comment += vocab_word.__str__()
-            if new_vocab:
-                comment += 'NEW!'
-            comment += '　'
+                
+                new_words.append('「' + vocab_word.__str__() + '」')
 
-    if not verygood:
+    if not new_words:
         return JsonResponse({})
 
     speech_file = request.FILES['speech_file']
     date = now()
     age = child.detail_age()
     footer = 'Voiceからの投稿'
+    comment = '、'.join(new_words) + 'をおぼえました。'
     
     try:
         photo = Photo.objects.create(title=speech, image=None, audio=speech_file, movie=None, comment=comment, date=date, age=age, owner=child, footer=footer)

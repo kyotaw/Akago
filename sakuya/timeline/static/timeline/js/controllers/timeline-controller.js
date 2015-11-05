@@ -5,12 +5,6 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', '$drago
 
 	$scope.childId = $('#internal-childid-token').text();
 	$scope.photoList = [];
-	Photo.query($scope.childId, function(data){
-		var photoData = data['photos'];
-		for (var i = 0; i < photoData.length; ++i) {
-			$scope.photoList.push(new Photo(photoData[i]));
-		}
-	});
 
 	$scope.channel = 'photos';
 	$dragon.onReady(function() {
@@ -18,9 +12,9 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', '$drago
 			$scope.dataMapper = new DataMapper(response.data);
 		});
 		$dragon.getList('photo-router', { owner_id: $scope.childId }).then(function(response) {
-			$scope.photoList = []
+			$scope.photoList = response.data
 			for (var i = 0; i < response.data.length; ++i) {
-				$scope.photoList.push(new Photo(response.data[i]));
+				//$scope.photoList.push(new Photo(response.data[i]));
 			}
 		});
 	});
