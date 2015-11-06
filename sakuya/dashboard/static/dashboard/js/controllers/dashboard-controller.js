@@ -1,6 +1,21 @@
 app = angular.module('DashboardApp');
 
 
+var LangState = {
+	'n': { state: true, headline: '名詞' },
+	'v': { state: true, headline: '動詞' },
+	'adj': { state: true, headline: '形容詞' },
+	'adv': { state: true, headline: '副詞' },
+	'im': { state: true, headline: '感動詞' },
+	'j': { state: false, headline: '助詞' },
+	'conj': { state: false, headline: '接続詞' },
+	'auv': { state: false, headline: '助動詞' },
+	'p': { state: false, headline: '接頭詞' },
+	't': { state: false, headline: '連体詞' },
+	'unk': { state: false, headline: '未知語' },
+	'showMean': false,
+}
+
 app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal', function($scope, $timeout, Child, $uibModal) {
 	$scope.motionChart = null;
 	$scope.langChart = null;
@@ -11,14 +26,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 
 	$scope.langChartStep = 5;
 	$scope.currentLangRange = [0, 15];
-	$scope.currentLangPosList = 
-		{
-			'n': '名詞',
-			'v': '動詞',
-			'adj': '形容詞',
-			'adv': '副詞',
-			'im': '感動詞'
-		}				
+	$scope.langState = LangState;
 
 	$scope.showAllPos = function() {
 		$('p.show-all').hide();
@@ -26,27 +34,35 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 		$('.dashboard-lang-frame').height('420px');
 		$('div.required').addClass('narrow');
 		$('div.additional').show();
-		$scope.langChart.clearChart();
-		$scope.currentLangPosList = 
-			{
-				'n': '名詞',
-				'v': '動詞',
-				'adj': '形容詞',
-				'adv': '副詞',
-				'im': '感動詞',
-				'j': '助詞',
-				'conj': '接続詞',
-				'auv': '助動詞',
-				'p': '接頭詞',
-				't': '連体詞',
-				'unk': '未知語'
-			}				
-		$scope.drawLangChart(self.currentLangPosList);
 	}
 
 	$scope.showMeanPos = function() {
 		$('.pos-mean').show();
 		$('.show-mean').hide();
+		$scope.langState.showMean = true;
+		$scope.refreshLangChart();
+	}
+
+	$scope.refreshLangChart = function() {
+		pos_list = {};
+		for (pos in $scope.langState) {
+			if ($scope.langState[pos].state) {
+				pos_list[pos] = $scope.langState[pos].headline
+				if ($scope.langState.showMean) {
+					pos_list[pos + '_mean'] = $scope.langState[pos].headline + '(平均)';
+				}
+			}
+		}
+		if ($scope.langChart) {
+			$scope.langChart.clearChart();
+			$scope.langChart = null;
+		}
+		if (Object.keys(pos_list).length == 0) {
+			$('.dashboard-lang-chart').hide();
+		 } else {
+			$('.dashboard-lang-chart').show();
+			$scope.drawLangChart(pos_list);
+		 }
 	}
 
 	$scope.openWordListModal = function(pos) {
@@ -56,7 +72,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 				templateUrl: 'word-list-modal.html',
 				controller: 'WordModalController',
 				resolve: {
-					Pos: function() { return $scope.currentLangPosList[pos]; },
+					Pos: function() { return $scope.langState[pos].headline; },
 					Words: function() { return data[pos]['words']; }
 				}
 			});
@@ -66,8 +82,11 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 	$scope.forwardLangChart = function() {
 		$scope.currentLangRange[0] += $scope.langChartStep;
 		$scope.currentLangRange[1] += $scope.langChartStep;
-		$scope.langChart.clearChart();
-		$scope.drawLangChart(self.currentLangPosList);
+		if ($scope.langChart) {
+			$scope.langChart.clearChart();
+			$scope.langChart = null;
+		}
+		$scope.refreshLangChart();
 	}
 
 	$scope.backwardLangChart = function() {
@@ -77,22 +96,28 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 		}
 		$scope.currentLangRange[0] = start;
 		$scope.currentLangRange[1] -= $scope.langChartStep;
-		$scope.langChart.clearChart();
-		$scope.drawLangChart(self.currentLangPosList);
+		if ($scope.langChart) {
+			$scope.langChart.clearChart();
+			$scope.langChart = null;
+		}
+		$scope.refreshLangChart()
 	}
 
 	$scope.drawLangChart = function(pos_list) {
 		var dataTable = new google.visualization.DataTable();
 		dataTable.addColumn('number', '生後(ヶ月)');
-		for (key in $scope.currentLangPosList) {
-			dataTable.addColumn('number', $scope.currentLangPosList[key]);
+
+		var pos_query = [];
+		for (pos in pos_list) {
+			dataTable.addColumn('number', pos_list[pos]);
+			pos_query.push(pos);
 		}
 		
 		var child = new Child($('#internal-childid-token').text());
-		child.words($scope.currentLangRange, [], function(data){
+		child.words($scope.currentLangRange, pos_query, function(data){
 			var res_list = [];
-			for (key in $scope.currentLangPosList) {
-				res_list.push(data[key]['monthly']);	
+			for (pos in pos_list) {
+				res_list.push(data[pos]['monthly']);	
 			}
 		
 			rows = [];
@@ -206,7 +231,7 @@ app.controller('DashboardController', ['$scope', '$timeout', 'Child', '$uibModal
 
 	function drawChart() {
 		$scope.drawMotionChart(['neck_fix', 'rolling_over', 'sit', 'crawl', 'pullup', 'standup', 'walk']);
-		$scope.drawLangChart(self.currentLangPosList);
+		$scope.refreshLangChart();
 		$scope.drawMuscleChart(['strength']);
 	}
 	google.load("visualization", "1", {packages: ["timeline", "line"], callback: drawChart});

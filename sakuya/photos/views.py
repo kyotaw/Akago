@@ -20,6 +20,15 @@ from sakuya.image_correct import *
 from sakuya.settings import MEDIA_ROOT
 
 
+def get_value(request, key):
+    if key in request.POST and request.POST[key] != '':
+        value = request.POST[key]
+    elif key in request.GET and request.GET[key] != '':
+        value = request.GET[key]
+    else:
+        value = ''
+    return value
+
 @csrf_exempt
 @require_POST
 def upload(request):
@@ -30,10 +39,13 @@ def upload(request):
     image_file = request.FILES['image_file']
     if not image_file:
         raise Http404
-
-    title = request.POST['title'] if 'title' in request.POST and request.POST['title'] != '' else 'タイトルなし'
-    comment = request.POST['comment'] if 'comment' in request.POST else ''
-    motion = require_POST['motion'] if 'motion' in request.POST else ''
+   
+    title = get_value(request, 'title')
+    if title == '':
+        title = 'タイトルなし'
+    
+    comment = get_value(request, 'comment')
+    motion = get_value(request, 'motion')
 
     child = get_owner_child(request, user)
     
@@ -41,7 +53,7 @@ def upload(request):
     age = child.detail_age()
 
     try:
-        photo = Photo.objects.create(title=title, audio=None, movie=None, stamp=None, comment=comment, date=date, image=image_file, age=age, owner=child)
+        photo = Photo.objects.create(title=title, audio=None, movie=None, stamp=None, comment=comment, motion=motion, date=date, image=image_file, age=age, owner=child)
     except IntegrityError:
         raise Http404
 
@@ -81,7 +93,7 @@ def query(request, child_id):
 
 @require_POST
 def convert(request, photo_id):
-    import pdb; pdb.set_trace()
+#    import pdb; pdb.set_trace()
     res = {}
 
     try:

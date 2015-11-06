@@ -134,6 +134,6 @@ SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubs
 SWAMP_DRAGON = { 'fff': 'sss' }
 
 # for local
-DRAGON_URL = 'http://192.168.1.67:9999/'
-SWAMP_DRAGON_HOST = '192.168.1.67'
+DRAGON_URL = 'http://192.168.11.11:9999/'
+SWAMP_DRAGON_HOST = '192.168.11.11'
 SWAMP_DRAGON_PORT = '9999'
