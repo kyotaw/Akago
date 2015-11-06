@@ -4,8 +4,8 @@ from swampdragon.serializers.model_serializer import ModelSerializer
 class PhotoSerializer(ModelSerializer):
     class Meta:
         model = 'photos.Photo'
-        publish_fields = ('title', 'image', 'audio', 'movie', 'date', 'age', 'comment', 'owner', 'stamp', 'footer', 'motion')
-        update_fields = ('title', 'image', 'audio', 'movie', 'date', 'age', 'comment', 'owner', 'stamp', 'footer', 'motion')
+        publish_fields = ('id', 'title', 'image', 'audio', 'movie', 'date', 'age', 'comment', 'owner', 'stamp', 'footer', 'motion')
+        update_fields = ('id', 'title', 'image', 'audio', 'movie', 'date', 'age', 'comment', 'owner', 'stamp', 'footer', 'motion')
 
     def serialize_image(self, obj):
         return obj.image.url if obj.image else ''

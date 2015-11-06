@@ -69,11 +69,17 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', '$drago
 		content = $('#photo-comment-input>.photo-comment-placeholder');
 		$scope.new_photo.comment = content.val();
 		$scope.new_photo.save(function(data){
-			location.href = '/timeline';
+			$scope.new_photo = new Photo();
+			$scope.hidePhotoEditor();
 		});
 	}
 
 	$scope.delete = function(id) {
 		return;
+	}
+
+	$scope.convert = function(photo_id) {
+		var photo = new Photo({'id': photo_id});
+		photo.convert('sepia');		
 	}
 }]);

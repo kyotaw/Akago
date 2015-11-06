@@ -133,6 +133,10 @@ ol.timeline-item-list {
   height: 50px;
   display: inline-block;
   float: right;
+  margin-right: 10px;
+}
+.timeline-stamp-executable {
+  cursor: pointer;
 }
 #timeline-photo-editor {
   display: none;

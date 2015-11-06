@@ -70,8 +70,8 @@
                     <span> - </span>
                     <span>{{ photo.age }}</span>
                   </div>
-                  <div ng-if="photo.stamp != ''" class="timeline-stamp-image" style="background-image: url(media/{{ photo.stamp }})">
-                  </div>
+									<div ng-if="photo.stamp != ''" class="timeline-stamp-image" style="background-image: url(media/{{ photo.stamp }})"></div>
+									<div ng-if="photo.image != ''" class="timeline-stamp-image timeline-stamp-executable" ng-click="convert(photo.id)" kktitle="セピアに変換" style="background-image: url(media/icons/sepia.png)"></div>
                 </div>
                 <div ng-if="photo.image != ''" class="photo-container">
                   <div class="timeline-photo-image" style="background-image: url(media/{{ photo.image }})">

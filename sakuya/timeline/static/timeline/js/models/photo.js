@@ -12,7 +12,7 @@ function initInst(inst, fields, attrs) {
 
 
 app.factory('Photo', ['$http', function($http) {
-	var fields = {'title': '', 'imageFile': null, 'image': '', 'audio': '', 'movie': '', 'date': '', 'age': '', 'comment': '', 'owner': '', 'stamp': '', 'footer': '', 'motion': ''};
+	var fields = {'id': '', 'title': '', 'imageFile': null, 'image': '', 'audio': '', 'movie': '', 'date': '', 'age': '', 'comment': '', 'owner': '', 'stamp': '', 'footer': '', 'motion': ''};
 	
 	var PHOTOS_URL = '/photos/';
 	
@@ -64,6 +64,28 @@ app.factory('Photo', ['$http', function($http) {
 
 			$http.post(
 				PHOTOS_URL,
+				fd,
+				{
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				}
+			).success(function(data){
+				if (success) {
+					success(data);
+				}
+			}).error(function(){
+				if (error) {
+					error();
+				}
+			});
+		},
+
+		convert: function(effect, success, error) {
+			var fd = new FormData();
+			fd.append('effect', effect);
+
+			$http.post(
+				PHOTOS_URL + 'convert/' + this.id,
 				fd,
 				{
 					transformRequest: angular.identity,
