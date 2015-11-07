@@ -21,6 +21,7 @@ tokenizer = Tokenizer()
 @require_POST
 def record(request):
 #    import pdb; pdb.set_trace()
+
     user = get_active_user(request)
 
     if 'speech_text' not in request.GET:
@@ -30,6 +31,7 @@ def record(request):
         raise Http404
 
     child = get_owner_child(request, user)
+    
     all_child = Child.objects.get(name='allofthem')
     
     speech = request.GET['speech_text']

@@ -79,7 +79,7 @@ app.controller('TimelineController', ['$scope', '$timeout', '$location', '$drago
 	}
 
 	$scope.convert = function(photo_id) {
-		var photo = new Photo({'id': photo_id});
-		photo.convert('sepia');		
+		//var photo = new Photo({'id': photo_id});
+		//photo.convert('sepia');		
 	}
 }]);

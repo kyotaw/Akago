@@ -16,7 +16,7 @@ from django.db import IntegrityError
 from sakuya.photos.models import Photo
 from sakuya.accounts.models import Child
 from sakuya.utils import get_active_user, get_owner_child
-from sakuya.image_correct import *
+#from sakuya.image_correct import *
 from sakuya.settings import MEDIA_ROOT
 
 
@@ -44,11 +44,14 @@ def upload(request):
     if title == '':
         title = 'タイトルなし'
     
-    comment = get_value(request, 'comment')
-    motion = get_value(request, 'motion')
-
     child = get_owner_child(request, user)
     
+    comment = get_value(request, 'comment')
+    motion = get_value(request, 'motion')
+    if motion == 'crawl':
+        if child.photo_set.filter(motion='crawl').count() == 0:
+            comment += '　' + 'ハイハイできるようになりました。'
+
     date = now()
     age = child.detail_age()
 
