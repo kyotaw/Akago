@@ -31,6 +31,7 @@ def record(request):
         raise Http404
 
     child = get_owner_child(request, user)
+#    child = Child.objects.get(name='mini')
     
     all_child = Child.objects.get(name='allofthem')
     

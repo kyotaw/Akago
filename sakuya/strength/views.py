@@ -26,6 +26,8 @@ def record(request):
     strength = request.POST['strength']
     
     child = get_owner_child(request, user)
+    
+#    child = Child.objects.get(name='mini')
     try:
         child.muscle_set.create(strength=strength, date=now())
     except:

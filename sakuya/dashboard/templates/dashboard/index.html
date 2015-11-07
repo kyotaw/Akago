@@ -38,11 +38,6 @@
 										<p class="key-value"><span class="profile-key">身長</span><span class="profile-value">：73cm</span></p>
 										<p class="key-value"><span class="profile-key">体重</span><span class="profile-value">：14kg</span></p>
                   </div>
-									{% if history_movie %}
-									<div class="dashboard-movie">
-											<video src="{{ history_movie }}"/>
-									</div>
-									{% else %}
 									<div class="dashboard-image">
 										最近の写真
 										{% if current_image %}
@@ -52,7 +47,6 @@
 										<p class="no-image">まだ写真がありません</p>
 										{% endif %}
 									</div>
-									{% endif %}
                 </div>
 								<div class="dashboard-footer">
 									<p>{{ photo.footer }}</p>
