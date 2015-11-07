@@ -33,6 +33,8 @@ def index(request):
 
     context['child_list'] = children[1:]
 
+    context['history_movie'] = 'media/movie/output_cov.avi'
+
     try:
         for photo in active_child.photo_set.all():
             if photo.image:
